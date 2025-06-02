@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EPICBATTLE</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+
+  /* Reset básico */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Russo One', sans-serif;
+    background: #1A1A1A;
+    color: #eee;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* HEADER FIJO */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: linear-gradient(90deg, #1E2A44 0%, #FF3333 100%);
+    box-shadow: 0 0 15px #FF333399;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    border-bottom: 2px solid #FF3333;
+  }
+  header h1 {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #FF3333;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px #FF3333;
+  }
+  nav {
+    display: flex;
+    gap: 2rem;
+  }
+  nav a {
+    position: relative;
+    color: #FF9999;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.25rem 0;
+    transition: color 0.3s ease;
+    text-shadow: 0 0 5px #FF3333;
+  }
+  nav a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: #FF3333;
+    transition: width 0.3s ease;
+  }
+  nav a:hover,
+  nav a:focus {
+    color: #FF6666;
+  }
+  nav a:hover::after,
+  nav a:focus::after {
+    width: 100%;
+  }
+
+  /* HERO */
+  .hero {
+    height: 90vh;
+    background: url('1.jpg') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 1rem;
+    margin-top: 72px;
+    position: relative;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(26,26,26,0.6) 0%, rgba(26,26,26,0.9) 80%);
+    z-index: 0;
+  }
+  .hero h2 {
+    position: relative;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 3.5rem;
+    color: #FF3333;
+    text-shadow: 0 0 15px #FF3333, 0 0 25px #1E2A44;
+    max-width: 900px;
+    z-index: 1;
+    margin-bottom: 1rem;
+  }
+  .hero button {
+    position: relative;
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1A1A1A;
+    background: #FF3333;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #FF3333;
+    transition: all 0.3s ease;
+    z-index: 1;
+  }
+  .hero button:hover {
+    background: #1E2A44;
+    box-shadow: 0 0 25px #FF3333;
+    transform: scale(1.05);
+  }
+
+  /* SECCIÓN CATÁLOGO */
+  #catalogo {
+    padding: 4rem 2rem 6rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  #catalogo h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 2.8rem;
+    text-align: center;
+    color: #FF3333;
+    margin-bottom: 3rem;
+    text-shadow: 0 0 10px #1E2A44;
+  }
+  .game-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+    gap: 2rem;
+  }
+  .game-card {
+    background: rgba(26, 26, 26, 0.8);
+    border: 2px solid #FF3333;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(255, 51, 51, 0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  .game-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 25px rgba(255, 51, 51, 0.6);
+  }
+  .game-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-bottom: 2px solid #FF3333;
+  }
+  .game-content {
+    padding: 1rem 1.2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .game-content h4 {
+    font-size: 1.3rem;
+    color: #FF9999;
+    margin-bottom: 0.3rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+  }
+  .game-content p {
+    font-size: 1rem;
+    color: #AACCEE;
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+  .game-content button {
+    align-self: flex-start;
+    background: #FF3333;
+    border: none;
+    padding: 0.55rem 1.5rem;
+    font-weight: 700;
+    color: #1A1A1A;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px #FF3333cc;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  .game-content button:hover {
+    background: #1E2A44;
+    box-shadow: 0 7px 20px #FF3333dd;
+  }
+
+  /* SECCIÓN NOVEDADES */
+  #novedades {
+    padding: 3rem 2rem 5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  #novedades h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    color: #FF3333;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 8px #1E2A44;
+  }
+  .novedades-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 1.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .novedad {
+    flex: 0 0 280px;
+    background: rgba(26, 26, 26, 0.8);
+    border: 2px solid #FF3333;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px #FF333355;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .novedad:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px #FF3333aa;
+  }
+  .novedad img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-bottom: 2px solid #FF3333;
+  }
+  .novedad h4 {
+    color: #FF9999;
+    font-size: 1.1rem;
+    padding: 0.75rem 1rem;
+    font-weight: 700;
+  }
+
+  /* FORMULARIO CONTACTO */
+  #contacto {
+    padding: 3rem 2rem 5rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  #contacto h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    color: #FF3333;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 8px #1E2A44;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+  }
+  input, textarea {
+    padding: 1rem;
+    border-radius: 12px;
+    border: none;
+    background: rgba(26, 26, 26, 0.9);
+    color: #ccc;
+    font-size: 1rem;
+    font-family: 'Russo One', sans-serif;
+    box-shadow: inset 0 0 10px #FF333333;
+    transition: box-shadow 0.3s ease;
+  }
+  input:focus, textarea:focus {
+    outline: none;
+    box-shadow: inset 0 0 15px #FF3333cc;
+  }
+  button.submit-btn {
+    background: #FF3333;
+    color: #1A1A1A;
+    font-weight: 700;
+    padding: 1rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 18px #FF3333cc;
+    transition: background 0.3s ease;
+  }
+  button.submit-btn:hover {
+    background: #1E2A44;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    background: #1E2A44;
+    color: #FF3333;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    border-top: 2px solid #FF3333;
+  }
+
+  /* Scrollbar personalizado para novedades */
+  .novedades-grid::-webkit-scrollbar {
+    height: 8px;
+  }
+  .novedades-grid::-webkit-scrollbar-track {
+    background: #1A1A1A;
+  }
+  .novedades-grid::-webkit-scrollbar-thumb {
+    background: #FF3333;
+    border-radius: 8px;
+  }
+  .game-card {
+  width: 220px; /* tamaño compacto */
+  background-color: #1e1e2f;
+  color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 12px;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.35);
+}
+
+.game-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-bottom: 1px solid #333;
+}
+
+.game-content {
+  padding: 12px;
+  text-align: center;
+}
+
+.game-content h4 {
+  margin: 8px 0 4px;
+  font-size: 1em; /* más pequeño */
+}
+
+.game-content p {
+  margin: 0 0 10px;
+  font-size: 0.8em;
+  color: #bbb;
+}
+
+.game-content button {
+  background-color: #ff4d4d;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85em;
+  transition: background-color 0.3s ease;
+}
+
+.game-content button:hover {
+  background-color: #e63939;
+}
+
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .hero h2 {
+      font-size: 2.2rem;
+    }
+    nav {
+      gap: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>DISFRUTE </h1>
+  <nav>
+    <a href="#catalogo">catalogo</a>
+    <a href="#novedades">novedades</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>A JUGAR</h2>
+  <button onclick="document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">Descargar Ahora</button>
+</section>
+
+<section id="catalogo" aria-label="Héroes y Juegos">
+  <h3>CATÁLOGO</h3>
+  <div class="game-list">
+
+    <div class="game-card" tabindex="0" role="article" aria-label="Simulador de camión americano">
+      <img src="2.jpg" alt="Simulador de camión americano" />
+      <div class="game-content">
+        <h4>American Truck Simulator</h4>
+        <p>Simulación</p>
+        <a href="https://www.mediafire.com/file/r660050kr2g94ug/7l_ats_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="Arma 3">
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/107410/header.jpg" alt="Arma 3" />
+      <div class="game-content">
+        <h4>Arma 3</h4>
+        <p>Acción / Shooter</p>
+        <a href="https://www.mediafire.com/file/62yijga5nfwxqi8/7l_arma3_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="La Puerta de Baldur 3">
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg" alt="La Puerta de Baldur 3" />
+      <div class="game-content">
+        <h4>La Puerta de Baldur 3</h4>
+        <p>RPG / Fantasía</p>
+        <a href="https://www.mediafire.com/file/qzcif9opjmsin46/7l_baldursgate3_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="Mesa Negra">
+      <img src="3.jpg" alt="Mesa Negra" />
+      <div class="game-content">
+        <h4>Mesa Negra</h4>
+        <p>Acción / Suspenso</p>
+        <a href="https://www.mediafire.com/file/62yijga5nfwxqi8/7l_arma3_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="Cyberpunk 2077">
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg" alt="Cyberpunk 2077" />
+      <div class="game-content">
+        <h4>Cyberpunk 2077</h4>
+        <p>Acción / RPG</p>
+        <a href="https://www.mediafire.com/file/62yijga5nfwxqi8/7l_arma3_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="Anillo de Elden">
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg" alt="Anillo de Elden" />
+      <div class="game-content">
+        <h4>Anillo de Elden</h4>
+        <p>RPG / Acción</p>
+        <a href="https://www.mediafire.com/file/62yijga5nfwxqi8/7l_arma3_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="Elden Ring Nightreign">
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1477440/header.jpg" alt="Elden Ring Nightreign" />
+      <div class="game-content">
+        <h4>Elden Ring Nightreign</h4>
+        <p>RPG / Acción</p>
+        <a href="https://www.mediafire.com/file/62yijga5nfwxqi8/7l_arma3_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="Simulador de camión europeo 2">
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/227300/header.jpg" alt="Simulador de camión europeo 2" />
+      <div class="game-content">
+        <h4>Simulador de camión europeo 2</h4>
+        <p>Simulación</p>
+        <a href="https://www.mediafire.com/file/62yijga5nfwxqi8/7l_arma3_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="Simulador de agricultura 25">
+      <img src="4.jpg" alt="Simulador de agricultura 25" />
+      <div class="game-content">
+        <h4>Simulador de agricultura 25</h4>
+        <p>Simulación</p>
+        <a href="https://www.mediafire.com/file/62yijga5nfwxqi8/7l_arma3_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="Forza Horizon 5">
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1551360/header.jpg" alt="Forza Horizon 5" />
+      <div class="game-content">
+        <h4>Forza Horizon 5</h4>
+        <p>Carreras / Mundo abierto</p>
+        <a href="https://www.mediafire.com/file/juv5jnrjf5990ta/7l_forzah5_setup_.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="Grand Theft Auto IV">
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/12220/header.jpg" alt="Grand Theft Auto IV" />
+      <div class="game-content">
+        <h4>Grand Theft Auto IV</h4>
+        <p>Acción / Mundo abierto</p>
+        <a href="https://www.mediafire.com/file/62yijga5nfwxqi8/7l_arma3_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="Grand Theft Auto V">
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg" alt="Grand Theft Auto V" />
+      <div class="game-content">
+        <h4>Grand Theft Auto V</h4>
+        <p>Acción / Mundo abierto</p>
+        <a href="https://www.mediafire.com/file/62yijga5nfwxqi8/7l_arma3_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="Left 4 Dead 2">
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/550/header.jpg" alt="Left 4 Dead 2" />
+      <div class="game-content">
+        <h4>Left 4 Dead 2</h4>
+        <p>FPS / Acción</p>
+        <a href="https://www.mediafire.com/file/62yijga5nfwxqi8/7l_arma3_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="Red Dead Redemption 2">
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg" alt="Red Dead Redemption 2" />
+      <div class="game-content">
+        <h4>Red Dead Redemption 2</h4>
+        <p>Acción / Mundo abierto</p>
+        <a href="https://www.mediafire.com/file/62yijga5nfwxqi8/7l_arma3_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="game-card" tabindex="0" role="article" aria-label="portal 1">
+      <img src="5.jpg" alt="portal 1" />
+      <div class="game-content">
+        <h4>portal 1</h4>
+        <p>adventure</p>
+        <a href="https://www.mediafire.com/file/62yijga5nfwxqi8/7l_arma3_setup.exe/file" target="_blank" rel="noopener noreferrer">
+          <button>Descargar Gratis</button>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section id="novedades" aria-label="Épicas Destacadas">
+  <h3>Héroes Destacados</h3>
+  <div class="novedades-grid">
+    <div class="novedad" tabindex="0" role="article" aria-label="Recomendación de Cyberpunk 2077">
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg" alt="Cyberpunk 2077" />
+      <div class="novedad-content">
+        <h4>Cyberpunk 2077</h4>
+        <p>Acción / RPG</p>
+      </div>
+    </div>
+
+    <div class="novedad" tabindex="0" role="article" aria-label="Recomendación de Elden Ring Nightreign">
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1477440/header.jpg" alt="Elden Ring Nightreign" />
+      <div class="novedad-content">
+        <h4>Elden Ring Nightreign</h4>
+        <p>RPG / Acción</p>
+      </div>
+    </div>
+
+    <div class="novedad" tabindex="0" role="article" aria-label="Recomendación de Fortnite: Batalla Real">
+      <img src="https://cdn2.unrealengine.com/Fortnite%2Fhome%2Ffortnite-hero-1920x1080-830x467-fb41753bc711ccbaaff3f69d4d3bbd343fc36d8d.jpg" alt="Fortnite: Batalla Real" />
+      <div class="novedad-content">
+        <h4>Fortnite: Batalla Real</h4>
+        <p>Battle Royale</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacto" aria-label="Formulario de contacto">
+  <h3>Contacto</h3>
+  <form>
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
+
+    <label for="email">Correo Electrónico:</label>
+    <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required />
+
+    <label for="mensaje">Mensaje:</label>
+    <textarea id="mensaje" name="mensaje" placeholder="Escribe tu mensaje aquí..." rows="5" required></textarea>
+
+    <button type="submit" class="submit-btn">Enviar</button>
+  </form>
+</section>
+
+<footer>
+  <p>© 2025 Defiende el Reino - Todos los derechos reservados</p>
+</footer>
+
+</body>
+</html>
